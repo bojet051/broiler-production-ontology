@@ -1,0 +1,47 @@
+candidate_id: CAND-2026-001
+created_at: "2026-04-15T18:30:00Z"
+
+source_context:
+  subdomain: lifecycle
+  prompt_version: "v1.0"
+  generator: "GPT-5.3-Codex"
+  notes: "Candidate created from broiler lifecycle extension session."
+
+entity:
+  entity_type: class
+  local_name: FinisherPhase
+  proposed_iri: "http://example.org/broiler-ontology#FinisherPhase"
+  preferred_label: "finisher phase"
+  definition: "Production lifecycle phase focused on final growth and feed conversion before pre-processing."
+  synonyms:
+    - "finishing phase"
+  target_parent: "http://example.org/broiler-ontology#ProductionLifecycle"
+
+axioms:
+  - axiom_type: subclass_of
+    expression_manchester: "FinisherPhase SubClassOf ProductionLifecycle"
+    rationale: "Maintains existing production phase modeling pattern."
+
+change_intent:
+  action: add
+  backward_compatibility: fully_backward_compatible
+
+evidence:
+  - source_type: paper
+    citation: "Joachimiak et al. (2025). The Artificial Intelligence Ontology"
+    url: "https://doi.org/10.1177/15705838241304103"
+    relevance_statement: "Supports structured curation loop and ontology branch extension method."
+  - source_type: expert
+    citation: "Domain curation note"
+    relevance_statement: "Broiler operations commonly segment final growth into a finisher stage."
+
+mappings: []
+
+qa:
+  confidence: 0.81
+  risk_level: low
+  semantic_consistency_check: pass
+  notes: "No conflict with existing phase individuals; reviewed against current cardinality constraints."
+
+review:
+  status: proposed
