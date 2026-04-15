@@ -1,0 +1,55 @@
+name: Curation Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "curation/**"
+      - "scripts/**"
+      - "requirements-curation.txt"
+      - ".github/workflows/curation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-candidates:
+    name: Validate candidate records
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install curation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-curation.txt
+
+      - name: Validate example candidate
+        run: |
+          python scripts/apply_candidate.py --check \
+            --schema curation/candidate-schema.json \
+            src/ontology/broiler-production-ontology-edit.ttl \
+            curation/candidate-example.yaml
+
+      - name: Validate candidate files in curation/candidates
+        shell: bash
+        run: |
+          shopt -s nullglob
+          files=(curation/candidates/*.yaml curation/candidates/*.yml curation/candidates/*.json)
+          if (( ${#files[@]} == 0 )); then
+            echo "No candidate files found under curation/candidates; skipping."
+            exit 0
+          fi
+
+          python scripts/apply_candidate.py --check \
+            --schema curation/candidate-schema.json \
+            src/ontology/broiler-production-ontology-edit.ttl \
+            "${files[@]}"

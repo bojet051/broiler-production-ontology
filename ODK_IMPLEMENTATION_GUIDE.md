@@ -2,7 +2,7 @@
 
 **Date:** April 15, 2026  
 **Repository:** https://github.com/bojet051/broiler-production-ontology  
-**Final Commit:** `c87bf7c` - "Migrate broiler ontology into ODK structure"
+**Current Commit (as of this guide update):** `2849530` - "Add mkdocs configuration and comprehensive documentation site"
 
 This guide documents the actual step-by-step implementation of the Broiler Production Ontology using the Ontology Development Kit (ODK), including challenges encountered and solutions applied.
 
@@ -36,7 +36,7 @@ cd ~/production_ontology/broiler_odk_bootstrap
 
 ---
 
-### Step 2: Create OD K Config File
+### Step 2: Create ODK Config File
 
 **Purpose:** Define ontology metadata and build parameters for ODK seed script.
 
@@ -420,3 +420,160 @@ The Broiler Production Ontology is now successfully integrated into ODK's standa
 - ✅ Full git history and remote tracking configured
 
 All 12 steps completed successfully.
+
+---
+
+## Post-Migration Additions (Completed)
+
+After the initial ODK migration, we added and validated the documentation deployment layer.
+
+### A) Fix docs workflow prerequisites
+
+The ODK-generated docs workflow expected `mkdocs.yaml` to exist. The initial workflow run failed until this file and the docs pages were added.
+
+Added:
+- `mkdocs.yaml`
+- `docs/index.md`
+- `docs/getting-started.md`
+- `docs/ontology-structure.md`
+- `docs/development.md`
+- `docs/contributing.md`
+- `docs/releases.md`
+
+Result:
+- Docs pipeline in `.github/workflows/docs.yml` is now configured with required inputs.
+
+### B) Keep bootstrap output out of long-term workflow
+
+Temporary ODK seed output under `broiler_odk_bootstrap/target/` was removed after scaffold merge.
+
+Result:
+- Bootstrap folder now contains only reusable seed inputs:
+  - `broiler_odk_bootstrap/broiler-odk.yaml`
+  - `broiler_odk_bootstrap/seed-via-docker.sh`
+
+---
+
+## Next Implementation Plan: LLM-Assisted Ontology Update Loop
+
+This is the practical roadmap for implementing the paper-style approach (manual curation + LLM assistance) in this repository.
+
+### Phase 1 — Define Scope and Metrics
+
+Set boundaries for what the LLM may propose and what must remain human-curated.
+
+Success metrics:
+- QC pass rate on PRs (`make test`)
+- Number of accepted/rejected LLM suggestions per cycle
+- Time from candidate generation to merged update
+- Number of ontology terms with complete labels/comments/axioms
+
+### Phase 2 — Design Candidate Schema
+
+Use a structured record for each LLM suggestion, e.g.:
+- candidate IRI/local name
+- preferred label
+- textual definition
+- parent class / property target
+- proposed axioms/restrictions
+- evidence source
+- confidence score
+
+Implemented artifacts in this repository:
+- `curation/candidate-schema.json` (machine-validated schema)
+- `curation/candidate-example.yaml` (filled example record)
+
+Usage:
+1. Create one candidate YAML per proposed term/change (following schema fields).
+2. Validate candidate completeness against the schema before review.
+3. Attach candidate record to the PR that modifies ontology content.
+
+### Phase 3 — Prompt Templates and Guardrails
+
+Create standard prompts that force:
+- ontology-consistent naming
+- no contradiction with existing restrictions
+- no removal of existing semantics unless explicitly requested
+- deprecation-first strategy for replacement terms
+
+Implemented artifacts in this repository:
+- `curation/prompts/system-prompt.md`
+- `curation/prompts/candidate-generation-prompt.md`
+- `curation/prompts/self-check-prompt.md`
+- `curation/prompts/guardrails.md`
+- `curation/prompts/README.md`
+
+Practical use:
+1. Run generation with `system-prompt.md` + `candidate-generation-prompt.md`.
+2. Run internal QA using `self-check-prompt.md`.
+3. Enforce acceptance boundaries via `guardrails.md` before PR merge.
+
+### Phase 4 — Human Review Workflow
+
+Every candidate must pass a checklist before merge:
+- semantic fit to domain
+- consistency with modeling style
+- label/comment quality
+- backward compatibility check
+- validation outputs reviewed
+
+Implemented artifacts in this repository:
+- `.github/PULL_REQUEST_TEMPLATE.md`
+- `curation/review-checklist.md`
+
+Workflow:
+1. Open PR using the repository PR template.
+2. Link candidate file(s) and prompt assets used.
+3. Reviewer executes `curation/review-checklist.md` before approval.
+4. Merge only after checklist + QC gates pass.
+
+### Phase 5 — Candidate-to-Ontology Update Flow
+
+Operational sequence:
+1. Generate candidate set (LLM)
+2. Curator triage (accept/revise/reject)
+3. Apply accepted changes to `src/ontology/broiler-production-ontology-edit.ttl`
+4. Run local validation (`sh ./run.sh make test`)
+5. Open PR with candidate evidence + QC outputs
+
+Implemented artifact:
+- `scripts/apply_candidate.py` validates a candidate against `curation/candidate-schema.json` and can preview or write a Turtle block for the editable ontology file.
+
+Usage:
+1. Validate a candidate only: `python scripts/apply_candidate.py --check src/ontology/broiler-production-ontology-edit.ttl curation/candidate-example.yaml`
+2. Apply an accepted candidate in place: `python scripts/apply_candidate.py --write src/ontology/broiler-production-ontology-edit.ttl curation/candidates/<candidate>.yaml`
+3. Keep candidate records under `curation/candidates/` for PR-based review.
+
+### Phase 6 — CI/QC Gates
+
+Enforce in PR process:
+- CI workflow must pass (`.github/workflows/qc.yml`)
+- docs workflow remains green when docs are touched (`.github/workflows/docs.yml`)
+- no direct push to main for ontology structural changes without review
+
+Implemented artifact:
+- `.github/workflows/curation.yml` validates the schema and runs the candidate application tool in check mode on PRs.
+
+### Phase 7 — Mapping and Alignment
+
+For accepted terms, track potential mappings to related ontologies/resources where relevant.
+
+Minimum mapping metadata:
+- mapped term ID
+- mapping type (exact/broad/narrow/related)
+- source and reviewer
+
+### Phase 8 — Pilot and Iterate
+
+Pilot one subdomain first (e.g., feed management or lifecycle modeling), evaluate outcomes, then scale to additional branches.
+
+---
+
+## Operational Notes
+
+- `src/ontology/run.sh` and CI were generated by ODK seed; they are template-managed assets.
+- The editable ontology source remains `src/ontology/broiler-production-ontology-edit.ttl`.
+- Keep `EDIT_FORMAT = ttl` in `src/ontology/broiler-production-ontology.Makefile`.
+- Use the bootstrap directory only for re-seeding/upgrading ODK templates.
+- Use `curation/candidate-schema.json` as the mandatory intake format for LLM-assisted proposals.
+- Use `curation/prompts/` as the standard generation + QA prompt pack for every candidate cycle.
