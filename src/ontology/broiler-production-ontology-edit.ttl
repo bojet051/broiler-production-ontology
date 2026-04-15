@@ -1,0 +1,1243 @@
+@prefix : <http://example.org/broiler-ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://example.org/broiler-ontology#> .
+
+<http://example.org/broiler-ontology> rdf:type owl:Ontology ;
+                                       owl:versionIRI <http://example.org/broiler-ontology/1.0> ;
+                                       rdfs:comment "Comprehensive systems ontology for industrial broiler production integrating biology, engineering, veterinary science, and economics." ;
+                                       rdfs:label "Industrial Broiler Production Ontology" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://example.org/broiler-ontology#controlledBy
+:controlledBy rdf:type owl:ObjectProperty ;
+              owl:inverseOf :controls ;
+              rdfs:domain :Infrastructure ;
+              rdfs:range :Controller ;
+              rdfs:comment "Relates infrastructure to a controller device that regulates it." ;
+              rdfs:label "controlled by" .
+
+
+###  http://example.org/broiler-ontology#controls
+:controls rdf:type owl:ObjectProperty ;
+          rdfs:domain :Controller ;
+          rdfs:range :Infrastructure ;
+          rdfs:comment "Inverse of controlledBy - relates a controller to the infrastructure it regulates." ;
+          rdfs:label "controls" .
+
+
+###  http://example.org/broiler-ontology#hasBiosecurityProtocol
+:hasBiosecurityProtocol rdf:type owl:ObjectProperty ;
+                        owl:inverseOf :isBiosecurityProtocolFor ;
+                        rdfs:domain :Infrastructure ;
+                        rdfs:range :Biosecurity ;
+                        rdfs:comment "Relates infrastructure to a biosecurity protocol in effect." ;
+                        rdfs:label "has biosecurity protocol" .
+
+
+###  http://example.org/broiler-ontology#isBiosecurityProtocolFor
+:isBiosecurityProtocolFor rdf:type owl:ObjectProperty ;
+                          rdfs:domain :Biosecurity ;
+                          rdfs:range :Infrastructure ;
+                          rdfs:comment "Inverse of hasBiosecurityProtocol - relates a biosecurity protocol to the infrastructure where it is applied." ;
+                          rdfs:label "is biosecurity protocol for" .
+
+
+###  http://example.org/broiler-ontology#hasBreed
+:hasBreed rdf:type owl:ObjectProperty ;
+          owl:inverseOf :isBreedOf ;
+          owl:deprecated "true"^^xsd:boolean ;
+          rdfs:domain :Broiler ;
+          rdfs:range :BroilerBreed ;
+          rdfs:comment "Legacy compatibility term only. Do not use in new axioms or example data. Replace with hasBreedLine for operational links to breed-assignment individuals classified under a breed category." ;
+          rdfs:label "has breed" .
+
+
+###  http://example.org/broiler-ontology#hasBreedLine
+:hasBreedLine rdf:type owl:ObjectProperty ;
+              owl:inverseOf :isBreedLineOf ;
+              rdfs:domain :Broiler ;
+              rdfs:range :BroilerBreed ;
+              rdfs:comment "Relates a broiler to a breed-line assignment individual that is classified under a broiler breed category such as Ross308." ;
+              rdfs:label "has breed line" .
+
+
+###  http://example.org/broiler-ontology#hasDisease
+:hasDisease rdf:type owl:ObjectProperty ;
+            owl:inverseOf :isDiseaseOf ;
+            rdfs:domain :Bird ;
+            rdfs:range :Disease ;
+            rdfs:comment "Relates a bird to a disease condition it has been diagnosed with." ;
+            rdfs:label "has disease" .
+
+
+###  http://example.org/broiler-ontology#hasFeed
+:hasFeed rdf:type owl:ObjectProperty ;
+          owl:deprecated "true"^^xsd:boolean ;
+         rdfs:domain :Broiler ;
+         rdfs:range :Feed ;
+         rdfs:comment "Legacy compatibility term only. Do not use in new axioms or example data. Replace with hasFeedBatch for operational links to feed instances." ;
+         rdfs:label "has feed" .
+
+
+###  http://example.org/broiler-ontology#hasFeedBatch
+:hasFeedBatch rdf:type owl:ObjectProperty ;
+              owl:inverseOf :isFeedBatchOf ;
+              rdfs:domain :Broiler ;
+              rdfs:range :Feed ;
+              rdfs:comment "Relates a broiler to a concrete feed batch or ration instance." ;
+              rdfs:label "has feed batch" .
+
+
+###  http://example.org/broiler-ontology#hasGender
+:hasGender rdf:type owl:ObjectProperty ;
+           owl:inverseOf :isGenderOf ;
+           rdfs:domain :Broiler ;
+           rdfs:range :Gender ;
+           rdfs:comment "Relates a broiler to its biological sex." ;
+           rdfs:label "has gender" .
+
+
+###  http://example.org/broiler-ontology#isBreedOf
+:isBreedOf rdf:type owl:ObjectProperty ;
+           owl:deprecated "true"^^xsd:boolean ;
+           rdfs:domain :BroilerBreed ;
+           rdfs:range :Broiler ;
+           rdfs:comment "Legacy compatibility term only. Kept because older data may use it as the inverse of hasBreed. New models should use hasBreedLine instead." ;
+           rdfs:label "is breed of" .
+
+
+###  http://example.org/broiler-ontology#isBreedLineOf
+:isBreedLineOf rdf:type owl:ObjectProperty ;
+               rdfs:domain :BroilerBreed ;
+               rdfs:range :Broiler ;
+               rdfs:comment "Inverse of hasBreedLine - relates a breed-line assignment individual to the broiler it classifies." ;
+               rdfs:label "is breed line of" .
+
+
+###  http://example.org/broiler-ontology#isDiseaseOf
+:isDiseaseOf rdf:type owl:ObjectProperty ;
+             rdfs:domain :Disease ;
+             rdfs:range :Bird ;
+             rdfs:comment "Inverse of hasDisease - relates a disease condition to the bird diagnosed with it." ;
+             rdfs:label "is disease of" .
+
+
+###  http://example.org/broiler-ontology#isFeedBatchOf
+:isFeedBatchOf rdf:type owl:ObjectProperty ;
+               rdfs:domain :Feed ;
+               rdfs:range :Broiler ;
+               rdfs:comment "Inverse of hasFeedBatch - relates a feed batch or ration instance to the broiler consuming it." ;
+               rdfs:label "is feed batch of" .
+
+
+###  http://example.org/broiler-ontology#isGenderOf
+:isGenderOf rdf:type owl:ObjectProperty ;
+            rdfs:domain :Gender ;
+            rdfs:range :Broiler ;
+            rdfs:comment "Inverse of hasGender - relates a gender value to the broiler classified by it." ;
+            rdfs:label "is gender of" .
+
+
+###  http://example.org/broiler-ontology#isInPhase
+:isInPhase rdf:type owl:ObjectProperty ;
+           owl:deprecated "true"^^xsd:boolean ;
+           rdfs:domain :Broiler ;
+           rdfs:range :ProductionLifecycle ;
+           rdfs:comment "Legacy compatibility term only. Do not use in new axioms or example data. Replace with hasCurrentPhase and the observation pattern for time-varying phase information." ;
+           rdfs:label "is in phase" .
+
+
+###  http://example.org/broiler-ontology#hasCurrentPhase
+:hasCurrentPhase rdf:type owl:ObjectProperty ;
+                 owl:inverseOf :isCurrentPhaseOf ;
+                 rdfs:domain :Broiler ;
+                 rdfs:range :ProductionLifecycle ;
+                 rdfs:comment "Relates a broiler to one controlled-vocabulary phase individual. The phase pattern is modeled at the individual layer, not as parallel phase classes." ;
+                 rdfs:label "has current phase" .
+
+
+###  http://example.org/broiler-ontology#isCurrentPhaseOf
+:isCurrentPhaseOf rdf:type owl:ObjectProperty ;
+                  rdfs:domain :ProductionLifecycle ;
+                  rdfs:range :Broiler ;
+                  rdfs:comment "Inverse of hasCurrentPhase - relates a controlled-vocabulary phase value to broilers currently assigned to it." ;
+                  rdfs:label "is current phase of" .
+
+
+###  http://example.org/broiler-ontology#managedBy
+:managedBy rdf:type owl:ObjectProperty ;
+           owl:inverseOf :managesInfrastructure ;
+           rdfs:domain :Infrastructure ;
+           rdfs:range :Stockmanship ;
+           rdfs:comment "Relates infrastructure or a flock to the stockmanship practices applied." ;
+           rdfs:label "managed by" .
+
+
+###  http://example.org/broiler-ontology#managesInfrastructure
+:managesInfrastructure rdf:type owl:ObjectProperty ;
+                       rdfs:domain :Stockmanship ;
+                       rdfs:range :Infrastructure ;
+                       rdfs:comment "Inverse of managedBy - relates a stockmanship practice to the infrastructure where it is applied." ;
+                       rdfs:label "manages infrastructure" .
+
+
+###  http://example.org/broiler-ontology#monitoredBy
+:monitoredBy rdf:type owl:ObjectProperty ;
+             owl:inverseOf :monitors ;
+             rdfs:domain :Infrastructure ;
+             rdfs:range :Sensor ;
+             rdfs:comment "Relates infrastructure to a sensor device that monitors it." ;
+             rdfs:label "monitored by" .
+
+
+###  http://example.org/broiler-ontology#monitors
+:monitors rdf:type owl:ObjectProperty ;
+          rdfs:domain :Sensor ;
+          rdfs:range :Infrastructure ;
+          rdfs:comment "Inverse of monitoredBy - relates a sensor to the infrastructure it monitors." ;
+          rdfs:label "monitors" .
+
+
+###  http://example.org/broiler-ontology#madeObservation
+:madeObservation rdf:type owl:ObjectProperty ;
+                 owl:inverseOf :observedBySensor ;
+                 rdfs:domain :Sensor ;
+                 rdfs:range :SensorObservation ;
+                 rdfs:comment "Relates a sensor to an observation event it produced." ;
+                 rdfs:label "made observation" .
+
+
+###  http://example.org/broiler-ontology#observedAt
+:observedAt rdf:type owl:ObjectProperty ;
+            owl:inverseOf :isTimeOfObservation ;
+            rdfs:domain :Observation ;
+            rdfs:range :TimeInstant ;
+            rdfs:comment "Relates an observation to the instant at which it was captured." ;
+            rdfs:label "observed at" .
+
+
+###  http://example.org/broiler-ontology#isTimeOfObservation
+:isTimeOfObservation rdf:type owl:ObjectProperty ;
+                     rdfs:domain :TimeInstant ;
+                     rdfs:range :Observation ;
+                     rdfs:comment "Inverse of observedAt - relates a time instant to observations captured at that instant." ;
+                     rdfs:label "is time of observation" .
+
+
+###  http://example.org/broiler-ontology#observedBySensor
+:observedBySensor rdf:type owl:ObjectProperty ;
+                  rdfs:domain :SensorObservation ;
+                  rdfs:range :Sensor ;
+                  rdfs:comment "Relates an observation event to the sensor that produced it." ;
+                  rdfs:label "observed by sensor" .
+
+
+###  http://example.org/broiler-ontology#observedDuring
+:observedDuring rdf:type owl:ObjectProperty ;
+                owl:inverseOf :isIntervalOfObservation ;
+                rdfs:domain :Observation ;
+                rdfs:range :TimeInterval ;
+                rdfs:comment "Relates an observation or state assignment to a time interval over which it is valid." ;
+                rdfs:label "observed during" .
+
+
+###  http://example.org/broiler-ontology#isIntervalOfObservation
+:isIntervalOfObservation rdf:type owl:ObjectProperty ;
+                         rdfs:domain :TimeInterval ;
+                         rdfs:range :Observation ;
+                         rdfs:comment "Inverse of observedDuring - relates a time interval to observations or state assignments valid during that interval." ;
+                         rdfs:label "is interval of observation" .
+
+
+###  http://example.org/broiler-ontology#observedInInfrastructure
+:observedInInfrastructure rdf:type owl:ObjectProperty ;
+                          owl:inverseOf :hasInfrastructureObservation ;
+                          rdfs:domain :Observation ;
+                          rdfs:range :Infrastructure ;
+                          rdfs:comment "Relates an observation to the infrastructure context in which it was made." ;
+                          rdfs:label "observed in infrastructure" .
+
+
+###  http://example.org/broiler-ontology#observedOnBroiler
+:observedOnBroiler rdf:type owl:ObjectProperty ;
+                   owl:inverseOf :hasBroilerObservation ;
+                   rdfs:domain :Observation ;
+                   rdfs:range :Broiler ;
+                   rdfs:comment "Relates an observation to the broiler it is about." ;
+                   rdfs:label "observed on broiler" .
+
+
+###  http://example.org/broiler-ontology#observesCharacteristic
+:observesCharacteristic rdf:type owl:ObjectProperty ;
+                        owl:inverseOf :isObservedCharacteristicOf ;
+                        rdfs:domain :Observation ;
+                        rdfs:range :ObservableCharacteristic ;
+                        rdfs:comment "Relates an observation to the characteristic being measured, such as live weight or house temperature." ;
+                        rdfs:label "observes characteristic" .
+
+
+###  http://example.org/broiler-ontology#hasBroilerObservation
+:hasBroilerObservation rdf:type owl:ObjectProperty ;
+                       rdfs:domain :Broiler ;
+                       rdfs:range :Observation ;
+                       rdfs:comment "Inverse of observedOnBroiler - relates a broiler to observations about it." ;
+                       rdfs:label "has broiler observation" .
+
+
+###  http://example.org/broiler-ontology#hasInfrastructureObservation
+:hasInfrastructureObservation rdf:type owl:ObjectProperty ;
+                              rdfs:domain :Infrastructure ;
+                              rdfs:range :Observation ;
+                              rdfs:comment "Inverse of observedInInfrastructure - relates infrastructure to observations made in that context." ;
+                              rdfs:label "has infrastructure observation" .
+
+
+###  http://example.org/broiler-ontology#isObservedCharacteristicOf
+:isObservedCharacteristicOf rdf:type owl:ObjectProperty ;
+                            rdfs:domain :ObservableCharacteristic ;
+                            rdfs:range :Observation ;
+                            rdfs:comment "Inverse of observesCharacteristic - relates an observable characteristic to observations that measure it." ;
+                            rdfs:label "is observed characteristic of" .
+
+
+###  http://example.org/broiler-ontology#recommendedForPhase
+:recommendedForPhase rdf:type owl:ObjectProperty ;
+                     owl:inverseOf :isPhaseRecommendedByFeed ;
+                     rdfs:domain :Feed ;
+                     rdfs:range :ProductionLifecycle ;
+                     rdfs:comment "Relates a feed category or feed batch to the controlled-vocabulary production phase for which it is intended." ;
+                     rdfs:label "recommended for phase" .
+
+
+###  http://example.org/broiler-ontology#isPhaseRecommendedByFeed
+:isPhaseRecommendedByFeed rdf:type owl:ObjectProperty ;
+                          rdfs:domain :ProductionLifecycle ;
+                          rdfs:range :Feed ;
+                          rdfs:comment "Inverse of recommendedForPhase - relates a controlled-vocabulary phase to feed categories or feed batches intended for that phase." ;
+                          rdfs:label "is phase recommended by feed" .
+
+
+###  http://example.org/broiler-ontology#usesCooling
+:usesCooling rdf:type owl:ObjectProperty ;
+             owl:inverseOf :coolsInfrastructure ;
+             rdfs:domain :Infrastructure ;
+             rdfs:range :CoolingSystem ;
+             rdfs:comment "Relates infrastructure to its cooling system." ;
+             rdfs:label "uses cooling" .
+
+
+###  http://example.org/broiler-ontology#coolsInfrastructure
+:coolsInfrastructure rdf:type owl:ObjectProperty ;
+                     rdfs:domain :CoolingSystem ;
+                     rdfs:range :Infrastructure ;
+                     rdfs:comment "Inverse of usesCooling - relates a cooling system to the infrastructure it serves." ;
+                     rdfs:label "cools infrastructure" .
+
+
+###  http://example.org/broiler-ontology#usesVentilation
+:usesVentilation rdf:type owl:ObjectProperty ;
+                 owl:inverseOf :ventilatesInfrastructure ;
+                 rdfs:domain :Infrastructure ;
+                 rdfs:range :VentilationSystem ;
+                 rdfs:comment "Relates infrastructure to its ventilation system." ;
+                 rdfs:label "uses ventilation" .
+
+
+###  http://example.org/broiler-ontology#ventilatesInfrastructure
+:ventilatesInfrastructure rdf:type owl:ObjectProperty ;
+                          rdfs:domain :VentilationSystem ;
+                          rdfs:range :Infrastructure ;
+                          rdfs:comment "Inverse of usesVentilation - relates a ventilation system to the infrastructure it serves." ;
+                          rdfs:label "ventilates infrastructure" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://example.org/broiler-ontology#hasAge
+:hasAge rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Broiler ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Records the age of the bird or flock in days." ;
+        rdfs:label "has age" .
+
+
+###  http://example.org/broiler-ontology#hasAmmoniaLevel
+:hasAmmoniaLevel rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :Ammonia ;
+                 rdfs:range xsd:float ;
+                 rdfs:comment "Records ammonia concentration in ppm." ;
+                 rdfs:label "has ammonia level" .
+
+
+###  http://example.org/broiler-ontology#hasCO2Level
+:hasCO2Level rdf:type owl:DatatypeProperty ;
+             rdfs:domain :CarbonDioxide ;
+             rdfs:range xsd:float ;
+             rdfs:comment "Records carbon dioxide concentration in ppm." ;
+             rdfs:label "has CO2 level" .
+
+
+###  http://example.org/broiler-ontology#hasFCRValue
+:hasFCRValue rdf:type owl:DatatypeProperty ;
+             rdfs:domain :PerformanceIndex ;
+             rdfs:range xsd:float ;
+             rdfs:comment "Records feed conversion ratio." ;
+             rdfs:label "has FCR value" .
+
+
+###  http://example.org/broiler-ontology#hasHumidityValue
+:hasHumidityValue rdf:type owl:DatatypeProperty ;
+                  rdfs:domain :Humidity ;
+                  rdfs:range xsd:float ;
+                  rdfs:comment "Records a relative humidity reading as a percentage." ;
+                  rdfs:label "has humidity value" .
+
+
+###  http://example.org/broiler-ontology#hasLiveWeight
+:hasLiveWeight rdf:type owl:DatatypeProperty ;
+               rdfs:domain :Broiler ;
+               rdfs:range xsd:float ;
+               rdfs:comment "Records live body weight in kilograms." ;
+               rdfs:label "has live weight" .
+
+
+###  http://example.org/broiler-ontology#hasORPValue
+:hasORPValue rdf:type owl:DatatypeProperty ;
+             rdfs:domain :ORP ;
+             rdfs:range xsd:float ;
+             rdfs:comment "Records oxidation-reduction potential in millivolts." ;
+             rdfs:label "has ORP value" .
+
+
+###  http://example.org/broiler-ontology#hasPEFValue
+:hasPEFValue rdf:type owl:DatatypeProperty ;
+             rdfs:domain :PerformanceIndex ;
+             rdfs:range xsd:float ;
+             rdfs:comment "Records production efficiency factor score." ;
+             rdfs:label "has PEF value" .
+
+
+###  http://example.org/broiler-ontology#hasPHValue
+:hasPHValue rdf:type owl:DatatypeProperty ;
+            rdfs:domain :pH ;
+            rdfs:range xsd:float ;
+            rdfs:comment "Records pH level of water." ;
+            rdfs:label "has pH value" .
+
+
+###  http://example.org/broiler-ontology#hasTDSValue
+:hasTDSValue rdf:type owl:DatatypeProperty ;
+             rdfs:domain :TDS ;
+             rdfs:range xsd:float ;
+             rdfs:comment "Records total dissolved solids in mg/L." ;
+             rdfs:label "has TDS value" .
+
+
+###  http://example.org/broiler-ontology#hasTemperatureValue
+:hasTemperatureValue rdf:type owl:DatatypeProperty ;
+                     rdfs:domain :Temperature ;
+                     rdfs:range xsd:float ;
+                     rdfs:comment "Records a temperature reading in degrees Celsius." ;
+                     rdfs:label "has temperature value" .
+
+
+###  http://example.org/broiler-ontology#hasNumericValue
+:hasNumericValue rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :Observation ;
+                 rdfs:range xsd:float ;
+                 rdfs:comment "Numeric result value recorded by an observation event." ;
+                 rdfs:label "has numeric value" .
+
+
+###  http://example.org/broiler-ontology#inXSDDateTime
+:inXSDDateTime rdf:type owl:DatatypeProperty ;
+               rdfs:domain :TimeInstant ;
+               rdfs:range xsd:dateTime ;
+               rdfs:comment "Calendar timestamp carried by a time instant." ;
+               rdfs:label "in XSD dateTime" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://example.org/broiler-ontology#AdjustedFCR
+:AdjustedFCR rdf:type owl:Class ;
+             rdfs:subClassOf :PerformanceIndex ;
+             rdfs:comment "FCR corrected to a standard market weight (e.g. 2.0 kg) to allow fair comparison across flocks harvested at different weights." ;
+             rdfs:label "Adjusted Feed Conversion Ratio" .
+
+
+###  http://example.org/broiler-ontology#AirVelocity
+:AirVelocity rdf:type owl:Class ;
+             rdfs:subClassOf :EnvironmentalParameter ;
+             rdfs:comment "Speed of air movement across the birds, measured in metres per second." ;
+             rdfs:label "Air Velocity" .
+
+
+###  http://example.org/broiler-ontology#Ammonia
+:Ammonia rdf:type owl:Class ;
+         rdfs:subClassOf :EnvironmentalParameter ;
+         rdfs:comment "Concentration of ammonia gas (NH3) in the house atmosphere, measured in parts per million (ppm)." ;
+         rdfs:label "Ammonia" .
+
+
+###  http://example.org/broiler-ontology#AutomationSystems
+:AutomationSystems rdf:type owl:Class ;
+                   rdfs:comment "Integrated hardware and software systems that automate environmental control, feeding, and data collection." ;
+                   rdfs:label "Automation Systems" .
+
+
+###  http://example.org/broiler-ontology#ManagementPractice
+:ManagementPractice rdf:type owl:Class ;
+                    rdfs:comment "Organizing superclass for husbandry, biosecurity, and other applied management practices." ;
+                    rdfs:label "Management Practice" .
+
+
+###  http://example.org/broiler-ontology#MonitoringAndAnalytics
+:MonitoringAndAnalytics rdf:type owl:Class ;
+                        rdfs:comment "Organizing superclass for monitoring, surveillance, and analytics capabilities in broiler production." ;
+                        rdfs:label "Monitoring and Analytics" .
+
+
+###  http://example.org/broiler-ontology#SystemConcern
+:SystemConcern rdf:type owl:Class ;
+               rdfs:comment "Organizing superclass for high-level system goals and concerns such as economics and sustainability." ;
+               rdfs:label "System Concern" .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :ManagementPractice
+                :MonitoringAndAnalytics
+                :SystemConcern
+              )
+] .
+
+
+###  http://example.org/broiler-ontology#BehavioralEcology
+:BehavioralEcology rdf:type owl:Class ;
+                   rdfs:subClassOf :EnvironmentalParameter ;
+                   rdfs:comment "Observation and analysis of flock behaviour patterns as indicators of welfare, health, and environmental suitability." ;
+                   rdfs:label "Behavioral Ecology" .
+
+
+###  http://example.org/broiler-ontology#Biosecurity
+:Biosecurity rdf:type owl:Class ;
+             rdfs:subClassOf :ManagementPractice ;
+             rdfs:comment "Protocols and physical barriers designed to prevent the introduction and spread of pathogens on the farm." ;
+             rdfs:label "Biosecurity" .
+
+
+###  http://example.org/broiler-ontology#Bird
+:Bird rdf:type owl:Class ;
+      rdfs:comment "Any avian species kept in the production system." ;
+      rdfs:label "Bird" .
+
+
+###  http://example.org/broiler-ontology#Broiler
+:Broiler rdf:type owl:Class ;
+         rdfs:subClassOf :Bird ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasBreedLine ;
+                           owl:someValuesFrom :BroilerBreed
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasCurrentPhase ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onClass :ProductionLifecycle
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasFeedBatch ;
+                           owl:someValuesFrom :Feed
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasGender ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onClass :Gender
+                         ] ;
+         rdfs:comment "A chicken raised specifically for meat production." ;
+         rdfs:label "Broiler" .
+
+
+###  http://example.org/broiler-ontology#BroilerBreed
+:BroilerBreed rdf:type owl:Class ;
+              rdfs:comment "A commercially available genetic line of broiler chicken. Breed lines are modeled as classes so breed-specific reasoning classes can be defined using existential restrictions." ;
+              rdfs:label "Broiler Breed" .
+
+
+###  http://example.org/broiler-ontology#BroilerHouse
+:BroilerHouse rdf:type owl:Class ;
+              rdfs:subClassOf :Infrastructure ;
+              rdfs:comment "A poultry house or shed that physically contains a broiler flock." ;
+              rdfs:label "Broiler House" .
+
+
+###  http://example.org/broiler-ontology#CarbonDioxide
+:CarbonDioxide rdf:type owl:Class ;
+               rdfs:subClassOf :EnvironmentalParameter ;
+               rdfs:comment "Concentration of CO2 in the house atmosphere, measured in parts per million (ppm)." ;
+               rdfs:label "Carbon Dioxide" .
+
+
+###  http://example.org/broiler-ontology#Cobb500
+:Cobb500 rdf:type owl:Class ;
+         rdfs:subClassOf :BroilerBreed ;
+         owl:disjointWith :Ross308 ;
+         rdfs:comment "A broiler breed developed by Cobb-Vantress, known for efficient feed conversion and robust livability." ;
+         rdfs:label "Cobb 500" .
+
+
+###  http://example.org/broiler-ontology#Coccidiosis
+:Coccidiosis rdf:type owl:Class ;
+             rdfs:subClassOf :Disease ;
+             owl:disjointWith :Gumboro ,
+                              :InfectiousBronchitis ,
+                              :NecroticEnteritis ,
+                              :NewcastleDisease ;
+             rdfs:comment "Parasitic intestinal disease caused by Eimeria spp., resulting in gut lesions and poor feed conversion." ;
+             rdfs:label "Coccidiosis" .
+
+
+###  http://example.org/broiler-ontology#CoefficientOfVariation
+:CoefficientOfVariation rdf:type owl:Class ;
+                        rdfs:subClassOf :PerformanceIndex ;
+                        rdfs:comment "Standard deviation of body weight expressed as a percentage of the mean; lower CV indicates better uniformity." ;
+                        rdfs:label "Coefficient of Variation" .
+
+
+###  http://example.org/broiler-ontology#Controller
+:Controller rdf:type owl:Class ;
+            rdfs:subClassOf :AutomationSystems ;
+            rdfs:comment "A programmable device that adjusts environmental equipment in response to sensor readings and set-point logic." ;
+            rdfs:label "Controller" .
+
+
+###  http://example.org/broiler-ontology#CoolingSystem
+:CoolingSystem rdf:type owl:Class ;
+               rdfs:subClassOf :Infrastructure ;
+               rdfs:comment "Equipment such as evaporative pads or foggers used to reduce house temperature during heat stress." ;
+               rdfs:label "Cooling System" .
+
+
+###  http://example.org/broiler-ontology#Disease
+:Disease rdf:type owl:Class ;
+         owl:disjointWith :Feed ,
+                          :Infrastructure ,
+                          :Sensor ,
+                          :BroilerBreed ;
+         rdfs:comment "A pathological condition affecting broiler health, welfare, or productivity." ;
+         rdfs:label "Disease" .
+
+
+###  http://example.org/broiler-ontology#EconomicOptimization
+:EconomicOptimization rdf:type owl:Class ;
+                      rdfs:subClassOf :SystemConcern ;
+                      rdfs:comment "Decision-support models and analyses that maximise profitability by balancing feed cost, growth rate, and market timing." ;
+                      rdfs:label "Economic Optimization" .
+
+
+###  http://example.org/broiler-ontology#EnvironmentalParameter
+:EnvironmentalParameter rdf:type owl:Class ;
+                        rdfs:subClassOf :ObservableCharacteristic ;
+                        rdfs:comment "A measurable attribute of the poultry house environment." ;
+                        rdfs:label "Environmental Parameter" .
+
+
+###  http://example.org/broiler-ontology#FCR
+:FCR rdf:type owl:Class ;
+     rdfs:subClassOf :PerformanceIndex ;
+     rdfs:comment "Kilograms of feed consumed per kilogram of live weight gained. Lower values indicate better efficiency." ;
+     rdfs:label "Feed Conversion Ratio" .
+
+
+###  http://example.org/broiler-ontology#Feed
+:Feed rdf:type owl:Class ;
+      owl:disjointWith :Infrastructure ,
+                       :Sensor ;
+      rdfs:subClassOf :Nutrition ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty :recommendedForPhase ;
+                        owl:someValuesFrom :ProductionLifecycle
+                      ] ;
+      rdfs:comment "A prepared ration supplied to broilers, formulated for a specific growth phase." ;
+      rdfs:label "Feed" .
+
+
+###  http://example.org/broiler-ontology#FeedQuality
+:FeedQuality rdf:type owl:Class ;
+             rdfs:subClassOf :Nutrition ;
+             rdfs:comment "Assessment of physical and nutritional characteristics of the manufactured feed." ;
+             rdfs:label "Feed Quality" .
+
+
+###  http://example.org/broiler-ontology#FinisherFeed
+:FinisherFeed rdf:type owl:Class ;
+              rdfs:subClassOf :Feed ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :recommendedForPhase ;
+                                owl:hasValue :PreProcessing
+                              ] ;
+              owl:disjointWith :GrowerFeed ,
+                               :StarterFeed ;
+              rdfs:comment "High-energy pellet ration fed from approximately day 25 to harvest." ;
+              rdfs:label "Finisher Feed" .
+
+
+###  http://example.org/broiler-ontology#Gender
+:Gender rdf:type owl:Class ;
+  rdfs:comment "The biological sex classification dimension of a broiler. Controlled vocabulary values for gender are modeled as named individuals such as Male and Female." ;
+        rdfs:label "Gender" .
+
+
+###  http://example.org/broiler-ontology#GrowerFeed
+:GrowerFeed rdf:type owl:Class ;
+            rdfs:subClassOf :Feed ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :recommendedForPhase ;
+                              owl:hasValue :GrowingPhase
+                            ] ;
+            owl:disjointWith :StarterFeed ;
+            rdfs:comment "Intermediate-energy pellet ration fed from approximately day 11 to day 24." ;
+            rdfs:label "Grower Feed" .
+
+
+###  http://example.org/broiler-ontology#Gumboro
+:Gumboro rdf:type owl:Class ;
+         rdfs:subClassOf :Disease ;
+         owl:disjointWith :InfectiousBronchitis ,
+                          :NecroticEnteritis ,
+                          :NewcastleDisease ;
+         rdfs:comment "Immunosuppressive viral disease targeting the bursa of Fabricius in young chickens." ;
+         rdfs:label "Infectious Bursal Disease (Gumboro)" .
+
+
+###  http://example.org/broiler-ontology#HealthSurveillance
+:HealthSurveillance rdf:type owl:Class ;
+                    rdfs:subClassOf :MonitoringAndAnalytics ;
+                    rdfs:comment "Systematic monitoring activities, including serology, post-mortem examination, and mortality tracking, to detect disease early." ;
+                    rdfs:label "Health Surveillance" .
+
+
+###  http://example.org/broiler-ontology#Humidity
+:Humidity rdf:type owl:Class ;
+          rdfs:subClassOf :EnvironmentalParameter ;
+          rdfs:comment "Relative humidity percentage inside the poultry house." ;
+          rdfs:label "Humidity" .
+
+
+###  http://example.org/broiler-ontology#InfectiousBronchitis
+:InfectiousBronchitis rdf:type owl:Class ;
+                      rdfs:subClassOf :Disease ;
+                      owl:disjointWith :NecroticEnteritis ,
+                                       :NewcastleDisease ;
+                      rdfs:comment "Coronavirus-induced upper-respiratory disease that can also affect kidneys and reproductive tract." ;
+                      rdfs:label "Infectious Bronchitis" .
+
+
+###  http://example.org/broiler-ontology#Infrastructure
+:Infrastructure rdf:type owl:Class ;
+                owl:disjointWith :Sensor ,
+                                 :BroilerBreed ;
+                rdfs:comment "Physical housing structures, utilities, and fixed equipment that constitute the production facility." ;
+                rdfs:label "Infrastructure" .
+
+
+###  http://example.org/broiler-ontology#LightingSystem
+:LightingSystem rdf:type owl:Class ;
+                rdfs:subClassOf :Infrastructure ;
+                rdfs:comment "Light sources and programmes that regulate photoperiod length and intensity to influence broiler growth and behaviour." ;
+                rdfs:label "Lighting System" .
+
+
+###  http://example.org/broiler-ontology#LitterManagement
+:LitterManagement rdf:type owl:Class ;
+                  rdfs:subClassOf :ManagementPractice ;
+                  rdfs:comment "Practices governing bedding material selection, moisture control, and ammonia mitigation on the house floor." ;
+                  rdfs:label "Litter Management" .
+
+
+###  http://example.org/broiler-ontology#NecroticEnteritis
+:NecroticEnteritis rdf:type owl:Class ;
+                   rdfs:subClassOf :Disease ;
+                   owl:disjointWith :NewcastleDisease ;
+                   rdfs:comment "Clostridium perfringens toxin-mediated intestinal necrosis, often secondary to coccidiosis or feed changes." ;
+                   rdfs:label "Necrotic Enteritis" .
+
+
+###  http://example.org/broiler-ontology#NewcastleDisease
+:NewcastleDisease rdf:type owl:Class ;
+                  rdfs:subClassOf :Disease ;
+                  rdfs:comment "Highly contagious viral disease (paramyxovirus) causing respiratory, nervous, and enteric signs." ;
+                  rdfs:label "Newcastle Disease" .
+
+
+###  http://example.org/broiler-ontology#Nitrate
+:Nitrate rdf:type owl:Class ;
+         rdfs:subClassOf :WaterQuality ;
+         rdfs:comment "Concentration of nitrate (NO3-) in drinking water, measured in mg/L." ;
+         rdfs:label "Nitrate" .
+
+
+###  http://example.org/broiler-ontology#Nutrition
+:Nutrition rdf:type owl:Class ;
+           rdfs:comment "The science and practice of formulating and delivering feed to meet the metabolic requirements of broilers at each growth stage." ;
+           rdfs:label "Nutrition" .
+
+
+###  http://example.org/broiler-ontology#ORP
+:ORP rdf:type owl:Class ;
+     rdfs:subClassOf :WaterQuality ;
+     rdfs:comment "Electrochemical measurement (mV) indicating the sanitising capacity of drinking water." ;
+     rdfs:label "Oxidation-Reduction Potential" .
+
+
+###  http://example.org/broiler-ontology#PEF
+:PEF rdf:type owl:Class ;
+     rdfs:subClassOf :PerformanceIndex ;
+     rdfs:comment "Composite index: (Livability percent x Live Weight kg x 100) / (Age days x FCR). Higher is better." ;
+     rdfs:label "Production Efficiency Factor" .
+
+
+###  http://example.org/broiler-ontology#PelletDurabilityIndex
+:PelletDurabilityIndex rdf:type owl:Class ;
+                       rdfs:subClassOf :FeedQuality ;
+                       rdfs:comment "Percentage of intact pellets remaining after standardised tumbling test; indicator of feed physical quality." ;
+                       rdfs:label "Pellet Durability Index" .
+
+
+###  http://example.org/broiler-ontology#PerformanceIndex
+:PerformanceIndex rdf:type owl:Class ;
+                  owl:disjointWith :WaterQuality ;
+                  rdfs:subClassOf :ObservableCharacteristic ;
+                  rdfs:comment "Quantitative metrics used to evaluate flock efficiency, growth, and economic viability." ;
+                  rdfs:label "Performance Index" .
+
+
+###  http://example.org/broiler-ontology#PrecisionPoultry
+:PrecisionPoultry rdf:type owl:Class ;
+                  rdfs:subClassOf :MonitoringAndAnalytics ;
+                  rdfs:comment "Technology-driven approach using real-time sensor data, machine learning, and IoT to manage individual bird or flock performance." ;
+                  rdfs:label "Precision Poultry" .
+
+
+###  http://example.org/broiler-ontology#ProcessingPlantInterface
+:ProcessingPlantInterface rdf:type owl:Class ;
+                          rdfs:subClassOf :SystemConcern ;
+                          rdfs:comment "Logistics and quality parameters governing the hand-off of live birds from the farm to the processing plant." ;
+                          rdfs:label "Processing Plant Interface" .
+
+
+###  http://example.org/broiler-ontology#ProductionLifecycle
+:ProductionLifecycle rdf:type owl:Class ;
+                     rdfs:comment "Class of controlled-vocabulary phase individuals used as values of hasCurrentPhase and recommendedForPhase. Production phases are modeled as named individuals rather than parallel subclasses." ;
+                     rdfs:label "Production Phase Value" .
+
+
+###  http://example.org/broiler-ontology#Ross308
+:Ross308 rdf:type owl:Class ;
+         rdfs:subClassOf :BroilerBreed ;
+         rdfs:comment "A high-performance broiler breed developed by Aviagen, known for superior feed conversion and breast meat yield." ;
+         rdfs:label "Ross 308" .
+
+
+###  http://example.org/broiler-ontology#Sensor
+:Sensor rdf:type owl:Class ;
+        owl:disjointWith :BroilerBreed ;
+        rdfs:subClassOf :AutomationSystems ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :madeObservation ;
+                          owl:allValuesFrom :SensorObservation
+                        ] ;
+        rdfs:comment "A device that measures environmental or biological parameters such as temperature, humidity, or ammonia levels." ;
+        rdfs:label "Sensor" .
+
+
+###  http://example.org/broiler-ontology#StarterFeed
+:StarterFeed rdf:type owl:Class ;
+             rdfs:subClassOf :Feed ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty :recommendedForPhase ;
+                               owl:hasValue :BroodingPhase
+                             ] ;
+             rdfs:comment "High-protein crumble or mini-pellet ration fed from day 0 to approximately day 10." ;
+             rdfs:label "Starter Feed" .
+
+
+###  http://example.org/broiler-ontology#Stockmanship
+:Stockmanship rdf:type owl:Class ;
+              rdfs:subClassOf :ManagementPractice ;
+              rdfs:comment "Husbandry practices and daily management skills applied by farm personnel to optimise bird welfare and performance." ;
+              rdfs:label "Stockmanship" .
+
+
+###  http://example.org/broiler-ontology#Sustainability
+:Sustainability rdf:type owl:Class ;
+                rdfs:subClassOf :SystemConcern ;
+                rdfs:comment "Environmental stewardship practices including waste management, energy efficiency, and carbon footprint reduction." ;
+                rdfs:label "Sustainability" .
+
+
+###  http://example.org/broiler-ontology#TDS
+:TDS rdf:type owl:Class ;
+     rdfs:subClassOf :WaterQuality ;
+     rdfs:comment "Concentration (mg/L) of dissolved inorganic and organic substances in drinking water." ;
+     rdfs:label "Total Dissolved Solids" .
+
+
+###  http://example.org/broiler-ontology#Temperature
+:Temperature rdf:type owl:Class ;
+             rdfs:subClassOf :EnvironmentalParameter ;
+             rdfs:comment "Ambient air temperature inside the poultry house, measured in degrees Celsius." ;
+             rdfs:label "Temperature" .
+
+
+###  http://example.org/broiler-ontology#ThermalPhysiology
+:ThermalPhysiology rdf:type owl:Class ;
+                   rdfs:subClassOf :MonitoringAndAnalytics ;
+                   rdfs:comment "The study and monitoring of heat exchange between broilers and their environment, including body-temperature regulation." ;
+                   rdfs:label "Thermal Physiology" .
+
+
+###  http://example.org/broiler-ontology#Uniformity
+:Uniformity rdf:type owl:Class ;
+            rdfs:subClassOf :PerformanceIndex ;
+            rdfs:comment "Percentage of birds within +/-10% of the flock mean body weight." ;
+            rdfs:label "Uniformity" .
+
+
+###  http://example.org/broiler-ontology#VentilationSystem
+:VentilationSystem rdf:type owl:Class ;
+                   rdfs:subClassOf :Infrastructure ;
+                   rdfs:comment "Mechanical or natural air-exchange system controlling air quality, temperature, and humidity inside the house." ;
+                   rdfs:label "Ventilation System" .
+
+
+###  http://example.org/broiler-ontology#VeterinaryLogistics
+:VeterinaryLogistics rdf:type owl:Class ;
+                     rdfs:subClassOf :ManagementPractice ;
+                     rdfs:comment "Coordination of veterinary services, vaccination programmes, medication, and diagnostic sampling." ;
+                     rdfs:label "Veterinary Logistics" .
+
+
+###  http://example.org/broiler-ontology#WaterQuality
+:WaterQuality rdf:type owl:Class ;
+              rdfs:subClassOf :ObservableCharacteristic ;
+              rdfs:comment "Assessment of the potability and chemical composition of drinking water supplied to broilers." ;
+              rdfs:label "Water Quality" .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :EnvironmentalParameter
+                :PerformanceIndex
+                :WaterQuality
+              )
+] .
+
+
+###  http://example.org/broiler-ontology#ObservableCharacteristic
+:ObservableCharacteristic rdf:type owl:Class ;
+                          rdfs:comment "A characteristic or property kind that observations are about. Major branches include environmental parameters, performance indices, and water-quality characteristics." ;
+                          rdfs:label "Observable Characteristic" .
+
+
+###  http://example.org/broiler-ontology#Observation
+:Observation rdf:type owl:Class ;
+             rdfs:subClassOf [ rdf:type owl:Restriction ;
+                               owl:onProperty :observesCharacteristic ;
+                               owl:someValuesFrom :ObservableCharacteristic
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty :observedAt ;
+                               owl:someValuesFrom :TimeInstant
+                             ] ;
+             rdfs:comment "A measurement or assessment event that records a value about a characteristic at a specific time." ;
+             rdfs:label "Observation" .
+
+
+###  http://example.org/broiler-ontology#SensorObservation
+:SensorObservation rdf:type owl:Class ;
+                   rdfs:subClassOf :Observation ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty :observedBySensor ;
+                                     owl:someValuesFrom :Sensor
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty :hasNumericValue ;
+                                     owl:cardinality "1"^^xsd:nonNegativeInteger
+                                   ] ;
+                   rdfs:comment "An observation event produced by a sensor device." ;
+                   rdfs:label "Sensor Observation" .
+
+
+###  http://example.org/broiler-ontology#TimeInstant
+:TimeInstant rdf:type owl:Class ;
+             rdfs:subClassOf [ rdf:type owl:Restriction ;
+                               owl:onProperty :inXSDDateTime ;
+                               owl:cardinality "1"^^xsd:nonNegativeInteger
+                             ] ;
+             rdfs:comment "A zero-duration temporal point used to timestamp observations." ;
+             rdfs:label "Time Instant" .
+
+
+###  http://example.org/broiler-ontology#TimeInterval
+:TimeInterval rdf:type owl:Class ;
+              rdfs:comment "A temporal interval used for states or aggregated observations that remain valid for a duration." ;
+              rdfs:label "Time Interval" .
+
+
+###  http://example.org/broiler-ontology#LiveWeightObservation
+:LiveWeightObservation rdf:type owl:Class ;
+                       owl:equivalentClass [ rdf:type owl:Class ;
+                                             owl:intersectionOf ( :SensorObservation
+                                                                  [ rdf:type owl:Restriction ;
+                                                                    owl:onProperty :observesCharacteristic ;
+                                                                    owl:hasValue :LiveWeightCharacteristic
+                                                                  ]
+                                                                  [ rdf:type owl:Restriction ;
+                                                                    owl:onProperty :observedOnBroiler ;
+                                                                    owl:someValuesFrom :Broiler
+                                                                  ]
+                                                                )
+                                           ] ;
+                       rdfs:comment "Sensor observation whose measured characteristic is live body weight." ;
+                       rdfs:label "Live Weight Observation" .
+
+
+###  http://example.org/broiler-ontology#TemperatureObservation
+:TemperatureObservation rdf:type owl:Class ;
+                        owl:equivalentClass [ rdf:type owl:Class ;
+                                              owl:intersectionOf ( :SensorObservation
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty :observesCharacteristic ;
+                                                                     owl:hasValue :TemperatureCharacteristic
+                                                                   ]
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty :observedInInfrastructure ;
+                                                                     owl:someValuesFrom :Infrastructure
+                                                                   ]
+                                                                 )
+                                            ] ;
+                        rdfs:comment "Sensor observation whose measured characteristic is ambient air temperature." ;
+                        rdfs:label "Temperature Observation" .
+
+
+###  http://example.org/broiler-ontology#pH
+:pH rdf:type owl:Class ;
+    rdfs:subClassOf :WaterQuality ;
+    rdfs:comment "Measure of hydrogen-ion activity indicating acidity or alkalinity of drinking water." ;
+    rdfs:label "pH" .
+
+
+###  http://example.org/broiler-ontology#BiosecuredInfrastructure
+:BiosecuredInfrastructure rdf:type owl:Class ;
+                          owl:equivalentClass [ rdf:type owl:Class ;
+                                                owl:intersectionOf ( :Infrastructure
+                                                                     [ rdf:type owl:Restriction ;
+                                                                       owl:onProperty :hasBiosecurityProtocol ;
+                                                                       owl:someValuesFrom :Biosecurity
+                                                                     ]
+                                                                   )
+                                              ] ;
+                          rdfs:comment "Infrastructure that has at least one biosecurity protocol applied." ;
+                          rdfs:label "Biosecured Infrastructure" .
+
+
+###  http://example.org/broiler-ontology#BroodingStarterBroiler
+:BroodingStarterBroiler rdf:type owl:Class ;
+                        owl:equivalentClass [ rdf:type owl:Class ;
+                                              owl:intersectionOf ( :Broiler
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty :hasCurrentPhase ;
+                                                                     owl:hasValue :BroodingPhase
+                                                                   ]
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty :hasFeedBatch ;
+                                                                     owl:someValuesFrom :StarterFeed
+                                                                   ]
+                                                                 )
+                                            ] ;
+                        rdfs:comment "Broiler currently in brooding phase and receiving starter feed." ;
+                        rdfs:label "Brooding Starter Broiler" .
+
+
+###  http://example.org/broiler-ontology#MaleBroiler
+:MaleBroiler rdf:type owl:Class ;
+             owl:disjointWith :FemaleBroiler ;
+             owl:equivalentClass [ rdf:type owl:Class ;
+                                   owl:intersectionOf ( :Broiler
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty :hasGender ;
+                                                          owl:hasValue :Male
+                                                        ]
+                                                      )
+                                 ] ;
+             rdfs:comment "Broiler whose gender value is Male." ;
+             rdfs:label "Male Broiler" .
+
+
+###  http://example.org/broiler-ontology#FemaleBroiler
+:FemaleBroiler rdf:type owl:Class ;
+               owl:equivalentClass [ rdf:type owl:Class ;
+                                     owl:intersectionOf ( :Broiler
+                                                          [ rdf:type owl:Restriction ;
+                                                            owl:onProperty :hasGender ;
+                                                            owl:hasValue :Female
+                                                          ]
+                                                        )
+                                   ] ;
+               rdfs:comment "Broiler whose gender value is Female." ;
+               rdfs:label "Female Broiler" .
+
+
+###  http://example.org/broiler-ontology#Cobb500Broiler
+:Cobb500Broiler rdf:type owl:Class ;
+                owl:equivalentClass [ rdf:type owl:Class ;
+                                      owl:intersectionOf ( :Broiler
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty :hasBreedLine ;
+                                                             owl:someValuesFrom :Cobb500
+                                                           ]
+                                                         )
+                                    ] ;
+                rdfs:comment "Broiler classified as Cobb 500 by breed relation." ;
+                rdfs:label "Cobb 500 Broiler" .
+
+
+###  http://example.org/broiler-ontology#Ross308Broiler
+:Ross308Broiler rdf:type owl:Class ;
+                owl:equivalentClass [ rdf:type owl:Class ;
+                                      owl:intersectionOf ( :Broiler
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty :hasBreedLine ;
+                                                             owl:someValuesFrom :Ross308
+                                                           ]
+                                                         )
+                                    ] ;
+                rdfs:comment "Broiler classified as Ross 308 by breed relation." ;
+                rdfs:label "Ross 308 Broiler" .
+
+
+###  http://example.org/broiler-ontology#Ross308MaleBroiler
+:Ross308MaleBroiler rdf:type owl:Class ;
+                    owl:equivalentClass [ rdf:type owl:Class ;
+                                          owl:intersectionOf ( :Ross308Broiler
+                                                               :MaleBroiler
+                                                             )
+                                        ] ;
+                    rdfs:comment "Broiler that is both Ross 308 and male." ;
+                    rdfs:label "Ross 308 Male Broiler" .
+
+
+###  http://example.org/broiler-ontology#Ross308FemaleBroiler
+:Ross308FemaleBroiler rdf:type owl:Class ;
+                      owl:equivalentClass [ rdf:type owl:Class ;
+                                            owl:intersectionOf ( :Ross308Broiler
+                                                                 :FemaleBroiler
+                                                               )
+                                          ] ;
+                      rdfs:comment "Broiler that is both Ross 308 and female." ;
+                      rdfs:label "Ross 308 Female Broiler" .
+
+
+###  http://example.org/broiler-ontology#Cobb500MaleBroiler
+:Cobb500MaleBroiler rdf:type owl:Class ;
+                    owl:equivalentClass [ rdf:type owl:Class ;
+                                          owl:intersectionOf ( :Cobb500Broiler
+                                                               :MaleBroiler
+                                                             )
+                                        ] ;
+                    rdfs:comment "Broiler that is both Cobb 500 and male." ;
+                    rdfs:label "Cobb 500 Male Broiler" .
+
+
+###  http://example.org/broiler-ontology#Cobb500FemaleBroiler
+:Cobb500FemaleBroiler rdf:type owl:Class ;
+                      owl:equivalentClass [ rdf:type owl:Class ;
+                                            owl:intersectionOf ( :Cobb500Broiler
+                                                                 :FemaleBroiler
+                                                               )
+                                          ] ;
+                      rdfs:comment "Broiler that is both Cobb 500 and female." ;
+                      rdfs:label "Cobb 500 Female Broiler" .
+
+
+###  http://example.org/broiler-ontology#SensorMonitoredInfrastructure
+:SensorMonitoredInfrastructure rdf:type owl:Class ;
+                               owl:equivalentClass [ rdf:type owl:Class ;
+                                                     owl:intersectionOf ( :Infrastructure
+                                                                          [ rdf:type owl:Restriction ;
+                                                                            owl:onProperty :monitoredBy ;
+                                                                            owl:someValuesFrom :Sensor
+                                                                          ]
+                                                                        )
+                                                   ] ;
+                               rdfs:comment "Infrastructure that is monitored by at least one sensor." ;
+                               rdfs:label "Sensor-Monitored Infrastructure" .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://example.org/broiler-ontology#BroodingPhase
+:BroodingPhase rdf:type owl:NamedIndividual ,
+                        :ProductionLifecycle ;
+               owl:differentFrom :GrowingPhase ,
+                                 :PreProcessing ;
+               rdfs:comment "Controlled-vocabulary phase value for the initial brooding period, typically days 0 to 14." ;
+               rdfs:label "Brooding Phase" .
+
+
+###  http://example.org/broiler-ontology#Female
+:Female rdf:type owl:NamedIndividual ,
+                 :Gender ;
+        owl:differentFrom :Male ;
+        rdfs:comment "A female broiler chicken." ;
+        rdfs:label "Female" .
+
+
+###  http://example.org/broiler-ontology#GrowingPhase
+:GrowingPhase rdf:type owl:NamedIndividual ,
+                       :ProductionLifecycle ;
+              owl:differentFrom :PreProcessing ;
+              rdfs:comment "Controlled-vocabulary phase value for the intermediate growing period, typically days 15 to 28." ;
+              rdfs:label "Growing Phase" .
+
+
+###  http://example.org/broiler-ontology#Male
+:Male rdf:type owl:NamedIndividual ,
+               :Gender ;
+      rdfs:comment "A male broiler chicken." ;
+      rdfs:label "Male" .
+
+
+###  http://example.org/broiler-ontology#LiveWeightCharacteristic
+:LiveWeightCharacteristic rdf:type owl:NamedIndividual ,
+                                   :ObservableCharacteristic ;
+                          rdfs:comment "Controlled-vocabulary individual representing live body weight as an observable characteristic." ;
+                          rdfs:label "Live Weight Characteristic" .
+
+###  http://example.org/broiler-ontology#PreProcessing
+:PreProcessing rdf:type owl:NamedIndividual ,
+                        :ProductionLifecycle ;
+               rdfs:comment "Controlled-vocabulary phase value for the final pre-processing period before slaughter." ;
+               rdfs:label "Pre-Processing Phase" .
+
+
+###  http://example.org/broiler-ontology#TemperatureCharacteristic
+:TemperatureCharacteristic rdf:type owl:NamedIndividual ,
+                                    :ObservableCharacteristic ;
+                           rdfs:comment "Controlled-vocabulary individual representing ambient air temperature." ;
+                           rdfs:label "Temperature Characteristic" .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

@@ -1,0 +1,28 @@
+# PURL configuration for http://purl.obolibrary.org/obo/broiler-production-ontology
+
+idspace: BROILER-PRODUCTION-ONTOLOGY
+base_url: /obo/broiler-production-ontology
+
+products:
+- broiler-production-ontology.owl: https://raw.githubusercontent.com/bojet051/broiler-production-ontology/main/broiler-production-ontology.owl
+- broiler-production-ontology.obo: https://raw.githubusercontent.com/bojet051/broiler-production-ontology/main/broiler-production-ontology.obo
+
+term_browser: ontobee
+example_terms:
+- BROILER-PRODUCTION-ONTOLOGY_0000000
+
+entries:
+
+- prefix: /releases/
+  replacement: https://raw.githubusercontent.com/bojet051/broiler-production-ontology/v
+
+- prefix: /tracker/
+  replacement: https://github.com/bojet051/broiler-production-ontology/issues
+
+- prefix: /about/
+  replacement: http://www.ontobee.org/ontology/BROILER-PRODUCTION-ONTOLOGY?iri=http://purl.obolibrary.org/obo/
+
+## generic fall-through, serve direct from github by default
+- prefix: /
+  replacement: https://raw.githubusercontent.com/bojet051/broiler-production-ontology/main/
+
