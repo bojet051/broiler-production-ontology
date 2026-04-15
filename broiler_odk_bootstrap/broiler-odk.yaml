@@ -1,0 +1,16 @@
+id: broiler-production-ontology
+title: Industrial Broiler Production Ontology
+github_org: bojet051
+repo: broiler-production-ontology
+git_main_branch: main
+release_artefacts:
+  - full
+primary_release: full
+export_formats:
+  - owl
+  - ttl
+robot_java_args: -Xmx8G
+robot_report:
+  use_labels: true
+  exclude_annotations:
+    - owl:versionInfo
