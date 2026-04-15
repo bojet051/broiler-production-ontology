@@ -1,0 +1,36 @@
+site_name: Industrial Broiler Production Ontology
+site_description: Comprehensive systems ontology for industrial broiler production integrating biology, engineering, veterinary science, and economics.
+site_author: bojet051
+site_url: https://bojet051.github.io/broiler-production-ontology
+repo_name: broiler-production-ontology
+repo_url: https://github.com/bojet051/broiler-production-ontology
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    scheme: default
+    primary: green
+    accent: green
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Ontology Structure: ontology-structure.md
+  - Development: development.md
+  - Contributing: contributing.md
+  - Release Notes: releases.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.highlight
